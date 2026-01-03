@@ -1,41 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ai Resume Analyser</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.8.0/fonts/remixicon.css" rel="stylesheet" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Resume Analyser</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.8.0/fonts/remixicon.css" rel="stylesheet" />
 </head>
 
 <body>
-    <header>
-        <h1>Ai Resume Analyser</h1>
-        <p>
-            Upload your resume to get instant feedback and suggestions for improvement using AI technology.
-        </p>
+  <header class="header">
+    <h1>AI Resume Analyser</h1>
+    <p>Upload your resume and get ATS + AI feedback instantly</p>
+  </header>
 
-    </header>
-    <main>
-        <section class="upload">
-            <label for="fileInput" id="upload">Upload your resume <i class="ri-file-text-line"></i></label>
-            <input type="file" id="fileInput" accept=".pdf,.doc,.docx" hidden>
-            <label for="text">Write your job description: </label>
-            <textarea name="" id="text"></textarea>
-            <button id="analysis">Analysis</button>
-            <div class="analysis"></div>
-            <div class="result"></div>
-        </section>
-    </main>
-    <!-- Pdf js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    <!-- mammoth.js -->
-    <script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
-    <!--  ocr -->
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <main class="container">
+    <!-- Upload Card -->
+    <section class="card">
+      <label for="fileInput" id="upload">
+        Upload your resume <i class="ri-file-text-line"></i>
+      </label>
+      <input type="file" id="fileInput" accept=".pdf,.doc,.docx" hidden />
 
-    <script src="script.js"></script>
+      <label for="text" class="jd-label">Job Description</label>
+      <textarea id="text" placeholder="Paste job description here..."></textarea>
+
+      <button id="analysis">Analyze Resume</button>
+    </section>
+
+    <!-- Resume Preview -->
+    <section class="card analysis"></section>
+
+    <!-- Result -->
+    <section class="card result"></section>
+  </main>
+
+  <!-- Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
+  <script src="script.js"></script>
 </body>
-
 </html>
