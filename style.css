@@ -86,5 +86,57 @@ button:hover{
     margin-top: var(--margin-large);
     width: 80%;
     max-width: 800px;
-    
+
 }
+/* Job Description Input */
+.upload textarea {
+    width: 100%;
+    max-width: 800px;
+    min-height: 160px;
+    margin-top: var(--margin-medium);
+    padding: var(--padding-medium);
+    border-radius: var(--border-radius-m);
+    border: 2px solid var(--secondary-color);
+    background-color: #1e1e1e;
+    color: var(--text-color);
+    font-family: var(--font-family);
+    font-size: var(--font-size-medium);
+    resize: vertical;
+    outline: none;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.upload textarea:focus {
+    border-color: rgb(4, 207, 238);
+    box-shadow: 0 0 8px rgba(4, 207, 238, 0.5);
+}
+
+/* Label spacing */
+.upload label[for="text"] {
+    display: block;
+    margin-top: var(--margin-large);
+    margin-bottom: var(--margin-small);
+    font-size: var(--font-size-medium);
+    font-weight: var(--font-weight-semibold);
+}
+#upload{
+    border: 2px dashed white;
+    padding: var(--padding-large);
+    border-radius: var(--border-radius-m);
+    margin-top: var(--margin-medium);
+    padding-top: var(--padding-medium);
+}
+#upload:hover{
+    background-color: var(--secondary-color);
+}
+.analysis{
+    background-color: #1e1e1e;
+    padding: var(--padding-large);
+    border-radius: var(--border-radius-m);
+    margin-bottom: var(--margin-large);
+    display: none;
+    margin-top: var(--margin-large);
+    min-height: 300px;
+    overflow: hidden;
+}
+

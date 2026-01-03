@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ai Resume Analyser</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.8.0/fonts/remixicon.css" rel="stylesheet" />
 </head>
+
 <body>
     <header>
         <h1>Ai Resume Analyser</h1>
@@ -16,12 +19,16 @@
     </header>
     <main>
         <section class="upload">
-            <label for="fileInput">Upload your resume</label>
+            <label for="fileInput" id="upload">Upload your resume <i class="ri-file-text-line"></i></label>
             <input type="file" id="fileInput" accept=".pdf,.doc,.docx" hidden>
+            <label for="text">Write your job description: </label>
+            <textarea name="" id="text"></textarea>
             <button id="analysis">Analysis</button>
             <div class="analysis"></div>
             <div class="result"></div>
         </section>
     </main>
+    <script src="script.js"></script>
 </body>
+
 </html>
