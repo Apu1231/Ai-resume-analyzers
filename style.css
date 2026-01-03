@@ -1,0 +1,90 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+:root{
+    --primary-color: #333;
+    --secondary-color: #555;
+    --text-color:#f4f4f4 ;
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    /* Padding */
+    --padding-small: 8px;
+    --padding-medium: 16px; 
+    --padding-large: 24px;
+
+    /* Margin */
+    --margin-small: 8px;
+    --margin-medium: 16px;
+    --margin-large: 24px;
+
+    /* font weight */
+    --font-weight-normal: 400;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* Font size */
+    --font-size-small: 14px;
+    --font-size-medium: 18px;
+    --font-size-large: 24px;
+
+    /* Border radius */
+    --border-radius-sm: 5px;
+    --border-radius-m: 10px;
+    --border-radius-l: 15px;
+
+}
+body{
+    font-family: var(--font-family);
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+section{
+    margin: var(--margin-large);
+
+}
+section.upload{
+    border: 2px dashed var(--secondary-color);
+    padding: var(--padding-large);
+    border-radius: var(--border-radius-m);
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: block;
+}
+.upload label{
+    font-size: var(--font-size-large);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-color);
+    cursor: pointer;
+}
+header{
+    margin-bottom: var(--margin-large);
+    text-align: center;
+}
+button{
+    background-color: rgb(4, 207, 238);
+    color: var(--text-color);
+    border: none;
+    padding: var(--padding-medium) var(--padding-large);
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    font-size: var(--font-size-medium);
+    font-weight: var(--font-weight-semibold);
+    transition: background-color 0.3s ease;
+}
+button:hover{
+    background-color: rgb(3, 162, 185);
+}
+#analysis{
+    margin-top: var(--margin-large);
+    width: 80%;
+    max-width: 800px;
+    
+}
