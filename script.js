@@ -1,5 +1,10 @@
 const fileInput = document.getElementById("fileInput");
 const analysisDiv = document.querySelector(".analysis");
+const uploadLabel = document.getElementById("upload");
+
+/* =========================
+   FILE INPUT CHANGE
+========================= */
 
 fileInput.addEventListener("change", async (e) => {
     const file = e.target.files[0];
@@ -18,7 +23,7 @@ fileInput.addEventListener("change", async (e) => {
     const reader = new FileReader();
 
     reader.onload = () => {
-        analysisDiv.innerHTML = ""; // reset
+        analysisDiv.innerHTML = "";
         analysisDiv.style.display = "block";
 
         // IMAGE PREVIEW
@@ -40,7 +45,6 @@ fileInput.addEventListener("change", async (e) => {
             analysisDiv.appendChild(iframe);
         }
 
-        // OTHER FILES
         else {
             analysisDiv.textContent = "Preview not available for this file type.";
         }
@@ -49,7 +53,7 @@ fileInput.addEventListener("change", async (e) => {
     reader.readAsDataURL(file);
 
     /* =========================
-       2️⃣ TEXT EXTRACTION (CONSOLE)
+       2️⃣ TEXT EXTRACTION
     ========================= */
 
     try {
@@ -58,20 +62,17 @@ fileInput.addEventListener("change", async (e) => {
         const resumeText = await extractResumeText(file);
 
         console.log("✅ Text extraction successful");
-        console.log("Resume text preview (first 500 characters):" );
+        console.log("Resume text preview (first 500 chars):");
         console.log(resumeText.slice(0, 500));
 
     } catch (error) {
-        console.error("❌ Text extraction failed:", error.message);
+        console.error("❌ Extraction failed:", error.message);
     }
 });
 
-
-// =========================
-// Drag & Drop functionality
-// =========================
-
-const uploadLabel = document.getElementById("upload");
+/* =========================
+   DRAG & DROP
+========================= */
 
 uploadLabel.addEventListener("dragover", (e) => {
     e.preventDefault();
@@ -93,58 +94,84 @@ uploadLabel.addEventListener("drop", (e) => {
     }
 });
 
-
-// =========================
-// PDF TEXT EXTRACTION
-// =========================
+/* =========================
+   PDF TEXT EXTRACTION
+========================= */
 
 async function extractTextFromPDF(file) {
-    if (!file || file.type !== "application/pdf") {
-        throw new Error("Invalid PDF file");
-    }
-
     const arrayBuffer = await file.arrayBuffer();
     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
 
-    let fullText = "";
+    let text = "";
 
-    for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
-        const page = await pdf.getPage(pageNumber);
-        const textContent = await page.getTextContent();
-
-        const pageText = textContent.items
-            .map(item => item.str)
-            .join(" ");
-
-        fullText += pageText + "\n";
+    for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const content = await page.getTextContent();
+        const pageText = content.items.map(item => item.str).join(" ");
+        text += pageText + "\n";
     }
 
-    return fullText.trim();
+    // 🔴 OCR fallback for scanned PDFs
+    if (text.trim().length < 50) {
+        console.warn("⚠️ Scanned PDF detected. Running OCR...");
+        text = await extractTextFromScannedPDF(file);
+    }
+
+    return text.trim();
 }
 
+/* =========================
+   OCR FOR SCANNED PDF
+========================= */
 
-// =========================
-// DOCX TEXT EXTRACTION
-// =========================
+async function extractTextFromScannedPDF(file) {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
 
-async function extractTextFromDOCX(file) {
-    if (
-        !file ||
-        file.type !== "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-    ) {
-        throw new Error("Invalid DOCX file");
+    let ocrText = "";
+
+    for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const viewport = page.getViewport({ scale: 2 });
+
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+
+        await page.render({
+            canvasContext: ctx,
+            viewport: viewport
+        }).promise;
+
+        const result = await Tesseract.recognize(
+            canvas,
+            "eng",
+            {
+                logger: m => console.log("OCR:", m.status, m.progress)
+            }
+        );
+
+        ocrText += result.data.text + "\n";
     }
 
+    return ocrText.trim();
+}
+
+/* =========================
+   DOCX TEXT EXTRACTION
+========================= */
+
+async function extractTextFromDOCX(file) {
     const arrayBuffer = await file.arrayBuffer();
     const result = await mammoth.extractRawText({ arrayBuffer });
-
     return result.value.trim();
 }
 
-
-// =========================
-// FILE TYPE ROUTER
-// =========================
+/* =========================
+   FILE TYPE ROUTER
+========================= */
 
 async function extractResumeText(file) {
     if (!file) throw new Error("No file provided");
@@ -153,9 +180,7 @@ async function extractResumeText(file) {
         return await extractTextFromPDF(file);
     }
 
-    if (
-        file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-    ) {
+    if (file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
         return await extractTextFromDOCX(file);
     }
 
